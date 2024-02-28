@@ -11,7 +11,8 @@ export const MainView = () => {
         "A vigilante known as Batman sets out to dismantle the criminal organization led by the Joker.",
       genre: ["Action"],
       director: "Christopher Nolan",
-      // imagePath: "darkknight.png",
+      image:
+        "https://image.tmdb.org/t/p/original/8QDQExnfNFOtabLDKqfDQuHDsIg.jpg",
       featured: true,
     },
     {
@@ -21,7 +22,8 @@ export const MainView = () => {
         "An insomniac office worker and a soap salesman form an underground fight club that evolves into something much, much more.",
       genre: ["Drama"],
       director: "David Fincher",
-      // imagePath: "fightclub.png",
+      image:
+        "https://image.tmdb.org/t/p/original/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg",
       featured: false,
     },
     {
@@ -31,7 +33,8 @@ export const MainView = () => {
         "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
       genre: ["Thriller"],
       director: "David Fincher",
-      // imagePath: "seven.png",
+      image:
+        "https://image.tmdb.org/t/p/original/8U0mV8diqCo5y43jPxPHs4S2oXY.jpg",
       featured: false,
     },
   ]);
