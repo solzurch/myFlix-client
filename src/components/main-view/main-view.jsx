@@ -11,7 +11,7 @@ export const MainView = () => {
         "A vigilante known as Batman sets out to dismantle the criminal organization led by the Joker.",
       genre: ["Action"],
       director: "Christopher Nolan",
-      // ImagePath: "darkknight.png",
+      image: "darkknight.png",
       featured: true,
     },
     {
@@ -21,7 +21,7 @@ export const MainView = () => {
         "An insomniac office worker and a soap salesman form an underground fight club that evolves into something much, much more.",
       genre: ["Drama"],
       director: "David Fincher",
-      // ImagePath: "fightclub.png",
+      image: "fightclub.png",
       featured: false,
     },
     {
@@ -31,7 +31,7 @@ export const MainView = () => {
         "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
       genre: ["Thriller"],
       director: "David Fincher",
-      // ImagePath: "seven.png",
+      image: "seven.png",
       featured: false,
     },
   ]);
