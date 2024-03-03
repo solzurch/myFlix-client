@@ -1,45 +1,30 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 
 export const MainView = () => {
-  const [movies, setMovies] = useState([
-    {
-      id: 1,
-      title: "The Dark Knight",
-      description:
-        "A vigilante known as Batman sets out to dismantle the criminal organization led by the Joker.",
-      genre: ["Action"],
-      director: "Christopher Nolan",
-      image:
-        "https://image.tmdb.org/t/p/original/8QDQExnfNFOtabLDKqfDQuHDsIg.jpg",
-      featured: true,
-    },
-    {
-      id: 2,
-      title: "Fight Club",
-      description:
-        "An insomniac office worker and a soap salesman form an underground fight club that evolves into something much, much more.",
-      genre: ["Drama"],
-      director: "David Fincher",
-      image:
-        "https://image.tmdb.org/t/p/original/sgTAWJFaB2kBvdQxRGabYFiQqEK.jpg",
-      featured: false,
-    },
-    {
-      id: 3,
-      title: "Seven",
-      description:
-        "Two detectives, a rookie and a veteran, hunt a serial killer who uses the seven deadly sins as his motives.",
-      genre: ["Thriller"],
-      director: "David Fincher",
-      image:
-        "https://image.tmdb.org/t/p/original/8U0mV8diqCo5y43jPxPHs4S2oXY.jpg",
-      featured: false,
-    },
-  ]);
+  const [movies, setMovies] = useState([]);
 
   const [selectedMovie, setSelectedMovie] = useState(null);
+
+  useEffect(() => {
+    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies")
+      .then((response) => response.json())
+      .then((data) => {
+        const moviesFromApi = data.map((movie) => {
+          return {
+            id: movie._id,
+            title: movie.Title,
+            // image: movie.Image,
+            genre: movie.Genre,
+            description: movie.Description,
+            director: movie.Director,
+          };
+        });
+
+        setMovies(moviesFromApi);
+      });
+  }, []);
 
   if (selectedMovie) {
     return (
