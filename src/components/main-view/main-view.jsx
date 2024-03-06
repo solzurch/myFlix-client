@@ -39,59 +39,57 @@ export const MainView = () => {
 
   if (!user) {
     return (
-      <LoginView
-        onLoggedIn={(user, token) => {
-          setUser(user);
-          setToken(token);
-        }}
-      />
+      <>
+        <LoginView
+          onLoggedIn={(user, token) => {
+            setUser(user);
+            setToken(token);
+          }}
+        />
+        or
+        <SingupView />
+      </>
     );
   }
 
   if (selectedMovie) {
+    let similarMovies = movies.filter((movie) => {
+      return (
+        movie.id !== selectedMovie.id &&
+        movie.genre.some((genre) => selectedMovie.genre.includes(genre))
+      );
+    });
     return (
       <>
-        <button
-          onClick={() => {
-            setUser(null);
-          }}
-        >
-          Logout
-        </button>
         <MovieView
+          key={movies.id}
           movie={selectedMovie}
-          onBackClick={() => setSelectedMovie(null)}
+          onBackClick={() => {
+            setSelectedMovie(null);
+          }}
         />
+        <hr />
+        <h2> Similar Movies </h2>
+        {similarMovies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            onMovieClick={(newSelectedMovie) => {
+              setSelectedMovie(newSelectedMovie);
+            }}
+          />
+        ))}
       </>
     );
   }
 
   if (movies.length === 0) {
-    return (
-      <>
-        <button
-          onClick={() => {
-            setUser(null);
-          }}
-        >
-          Logout
-        </button>
-        <div>The list is empty!</div>
-      </>
-    );
+    return;
+    <div>The list is empty!</div>;
   }
 
   return (
     <div>
-      <button
-        onClick={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      >
-        Logout
-      </button>
       {movies.map((movie) => (
         <MovieCard
           key={movie.id}
@@ -101,6 +99,15 @@ export const MainView = () => {
           }}
         />
       ))}
+      <button
+        onClick={() => {
+          setUser(null);
+          setToken(null);
+          localStorage.clear();
+        }}
+      >
+        Logout
+      </button>
     </div>
   );
 };
