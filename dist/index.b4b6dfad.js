@@ -28581,9 +28581,9 @@ const SingupView = ()=>{
     const handleSubmit = (event)=>{
         event.preventDefault(event);
         const data = {
-            UserName: username,
+            Username: username,
             Email: email,
-            Birthdate: birthday,
+            Birthday: birthday,
             Password: password
         };
         fetch("https://pelis-api-8f563354313a.herokuapp.com/users", {
