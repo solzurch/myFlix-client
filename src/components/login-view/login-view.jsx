@@ -12,7 +12,7 @@ export const LoginView = ({ onLoggedIn }) => {
       UserName: username,
       Password: password,
     };
-    fetch("https://cine-verse-b8832aa84c3e.herokuapp.com/login", {
+    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
