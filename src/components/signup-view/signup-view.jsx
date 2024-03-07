@@ -12,9 +12,9 @@ export const SingupView = () => {
     event.preventDefault(event);
 
     const data = {
-      UserName: username,
+      Username: username,
       Email: email,
-      Birthdate: birthday,
+      Birthday: birthday,
       Password: password,
     };
 
