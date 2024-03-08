@@ -44,11 +44,7 @@ export const SignupView = () => {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-<<<<<<< Updated upstream
           minLength="5"
-=======
-          minLength="3"
->>>>>>> Stashed changes
         />
       </Form.Group>
 
@@ -59,10 +55,7 @@ export const SignupView = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-<<<<<<< Updated upstream
           minLength="8"
-=======
->>>>>>> Stashed changes
         />
       </Form.Group>
 
@@ -87,11 +80,7 @@ export const SignupView = () => {
       </Form.Group>
 
       <Button variant="primary" type="submit">
-<<<<<<< Updated upstream
         Sign up
-=======
-        Submit
->>>>>>> Stashed changes
       </Button>
     </Form>
   );
