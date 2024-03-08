@@ -6,6 +6,7 @@ import Form from "react-bootstrap/Form";
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const handleSubmit = (event) => {
     // this prevents the default behavior of the form which is to reload the entire page
@@ -28,7 +29,7 @@ export const LoginView = ({ onLoggedIn }) => {
         console.log("Login response: ", data);
         if (data.user) {
           localStorage.setItem("token", data.token);
-          localStorage.setItem("user", data.user);
+          localStorage.setItem("user", JSON.stringify(data.user));
           onLoggedIn(data.user, data.token);
         } else {
           alert("No such user");
