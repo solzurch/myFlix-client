@@ -27224,7 +27224,7 @@ const MainView = ()=>{
                 columnNumber: 9
             }, undefined),
             "or",
-            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _signupView.SingupView), {}, void 0, false, {
+            /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _signupView.SignupView), {}, void 0, false, {
                 fileName: "src/components/main-view/main-view.jsx",
                 lineNumber: 50,
                 columnNumber: 9
@@ -28567,12 +28567,12 @@ $parcel$ReactRefreshHelpers$73d1.prelude(module);
 try {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
-parcelHelpers.export(exports, "SingupView", ()=>SingupView);
+parcelHelpers.export(exports, "SignupView", ()=>SignupView);
 var _jsxDevRuntime = require("react/jsx-dev-runtime");
 var _react = require("react");
 var _reactDefault = parcelHelpers.interopDefault(_react);
 var _s = $RefreshSig$();
-const SingupView = ()=>{
+const SignupView = ()=>{
     _s();
     const [username, setUsername] = (0, _react.useState)();
     const [email, setEmail] = (0, _react.useState)();
@@ -28707,10 +28707,10 @@ const SingupView = ()=>{
         columnNumber: 5
     }, undefined);
 };
-_s(SingupView, "zYmHs6APobVpL4zeqMgeGusOGEw=");
-_c = SingupView;
+_s(SignupView, "zYmHs6APobVpL4zeqMgeGusOGEw=");
+_c = SignupView;
 var _c;
-$RefreshReg$(_c, "SingupView");
+$RefreshReg$(_c, "SignupView");
 
   $parcel$ReactRefreshHelpers$73d1.postlude(module);
 } finally {
