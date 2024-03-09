@@ -9,9 +9,10 @@ export const LoginView = ({ onLoggedIn }) => {
     event.preventDefault();
 
     const data = {
-      UserName: username,
+      Username: username,
       Password: password,
     };
+
     fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
       method: "POST",
       headers: {
