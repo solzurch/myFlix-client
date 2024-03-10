@@ -13,8 +13,8 @@ export const LoginView = ({ onLoggedIn }) => {
     event.preventDefault();
 
     const data = {
-      access: username,
-      secret: password,
+      Username: username,
+      Password: password,
     };
 
     fetch("https://pelis-api-8f563354313a.herokuapp.com/login", {
