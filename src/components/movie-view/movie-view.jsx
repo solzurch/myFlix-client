@@ -4,7 +4,7 @@ export const MovieView = ({ movie, onBackClick }) => {
   return (
     <div>
       <div>
-        <img height={300} src={movie.imagePath} />
+        <img height={300} src={movie.image} />
       </div>
       <div>
         <span>Title: </span>
