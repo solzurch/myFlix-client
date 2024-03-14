@@ -50,11 +50,12 @@ export const MainView = () => {
       </>
     );
   }
-  /* 
+
   if (selectedMovie) {
     let similarMovies = movies.filter((movie) => {
       return (
         movie.id !== selectedMovie.id &&
+        Array.isArray(movie.genre) &&
         movie.genre.some((genre) => selectedMovie.genre.includes(genre))
       );
     });
@@ -80,11 +81,9 @@ export const MainView = () => {
         ))}
       </>
     );
-  } */
-
+  }
   if (movies.length === 0) {
-    return;
-    <div>The list is empty!</div>;
+    return <div>The list is empty!</div>;
   }
 
   return (
