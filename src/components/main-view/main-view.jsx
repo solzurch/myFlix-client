@@ -16,25 +16,24 @@ export const MainView = () => {
     if (!token) {
       return;
     }
-    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies"),
-      {
-        headers: { Authorization: `Bearer ${token}` },
-      }
-        .then((response) => response.json())
-        .then((data) => {
-          const moviesFromApi = data.map((movie) => {
-            return {
-              id: movie._id,
-              title: movie.Title,
-              imagePath: movie.Image,
-              genre: movie.Genre,
-              description: movie.Description,
-              director: movie.Director,
-            };
-          });
-
-          setMovies(moviesFromApi);
+    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const moviesFromApi = data.map((movie) => {
+          return {
+            id: movie._id,
+            title: movie.Title,
+            imagePath: movie.Image,
+            genre: movie.Genre,
+            description: movie.Description,
+            director: movie.Director,
+          };
         });
+
+        setMovies(moviesFromApi);
+      });
   }, [token]);
 
   if (!user) {
@@ -51,7 +50,7 @@ export const MainView = () => {
       </>
     );
   }
-
+  /* 
   if (selectedMovie) {
     let similarMovies = movies.filter((movie) => {
       return (
@@ -81,7 +80,7 @@ export const MainView = () => {
         ))}
       </>
     );
-  }
+  } */
 
   if (movies.length === 0) {
     return;
