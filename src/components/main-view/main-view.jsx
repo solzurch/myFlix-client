@@ -25,9 +25,7 @@ export const MainView = () => {
           return {
             id: movie._id,
             title: movie.Title,
-            imagePath:
-              "https://pelis-api-8f563354313a.herokuapp.com/images" +
-              movie.Image,
+            image: movie.Image,
             genre: movie.Genre,
             description: movie.Description,
             director: movie.Director,
