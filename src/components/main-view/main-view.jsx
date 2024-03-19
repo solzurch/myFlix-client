@@ -3,6 +3,9 @@ import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 export const MainView = () => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -16,40 +19,39 @@ export const MainView = () => {
     if (!token) {
       return;
     }
-    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const moviesFromApi = data.map((movie) => {
-          return {
-            id: movie._id,
-            title: movie.Title,
-            image: movie.Image,
-            genre: movie.Genre,
-            description: movie.Description,
-            director: movie.Director,
-          };
-        });
+    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies"),
+      {
+        headers: { Authorization: `Bearer ${token}` },
+      }
+        .then((response) => response.json())
+        .then((data) => {
+          const moviesFromApi = data.map((movie) => {
+            return {
+              id: movie._id,
+              title: movie.Title,
+              imagePath: movie.Image,
+              genre: movie.Genre,
+              description: movie.Description,
+              director: movie.Director,
+            };
+          });
 
-        setMovies(moviesFromApi);
-      });
+          setMovies(moviesFromApi);
+        });
   }, [token]);
 
   if (!user) {
     return (
-      <>
-        <LoginView
-          onLoggedIn={(user, token) => {
-            setUser(user);
-            setToken(token);
-          }}
-        />
-        or
-        <SignupView />
-      </>
+      <LoginView
+        onLoggedIn={(user, token) => {
+          setUser(user);
+          setToken(token);
+        }}
+      />
     );
   }
+
+  if (movies.length === 0) return <div>The list is empty!</div>;
 
   if (selectedMovie) {
     let similarMovies = movies.filter((movie) => {
@@ -61,24 +63,32 @@ export const MainView = () => {
     });
     return (
       <>
-        <MovieView
-          key={movies.id}
-          movie={selectedMovie}
-          onBackClick={() => {
-            setSelectedMovie(null);
+        <button
+          onClick={() => {
+            setUser(null);
           }}
+        >
+          Logout
+        </button>
+        <MovieView
+          movie={selectedMovie}
+          onBackClick={() => setSelectedMovie(null)}
         />
-        <hr />
-        <h2> Similar Movies </h2>
-        {similarMovies.map((movie) => (
-          <MovieCard
-            key={movie.id}
-            movie={movie}
-            onMovieClick={(newSelectedMovie) => {
-              setSelectedMovie(newSelectedMovie);
-            }}
-          />
-        ))}
+      </>
+    );
+  }
+
+  if (movies.length === 0) {
+    return (
+      <>
+        <button
+          onClick={() => {
+            setUser(null);
+          }}
+        >
+          Logout
+        </button>
+        <div>The list is empty!</div>
       </>
     );
   }
@@ -88,15 +98,6 @@ export const MainView = () => {
 
   return (
     <div>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
-          }}
-        />
-      ))}
       <button
         onClick={() => {
           setUser(null);
@@ -106,6 +107,15 @@ export const MainView = () => {
       >
         Logout
       </button>
+      {movies.map((movie) => (
+        <MovieCard
+          key={movie.id}
+          movie={movie}
+          onMovieClick={(newSelectedMovie) => {
+            setSelectedMovie(newSelectedMovie);
+          }}
+        />
+      ))}
     </div>
   );
 };

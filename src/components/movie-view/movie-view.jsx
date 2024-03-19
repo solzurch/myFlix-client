@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import "./movie-view.scss";
 
 export const MovieView = ({ movie, onBackClick }) => {
   return (
@@ -26,7 +27,13 @@ export const MovieView = ({ movie, onBackClick }) => {
         <span>Featured: </span>
         <span>{movie.featured}</span>
       </div>
-      <button onClick={onBackClick}>Back</button>
+      <button
+        onClick={onBackClick}
+        className="back-button"
+        style={{ cursor: "pointer" }}
+      >
+        Back
+      </button>
     </div>
   );
 };
@@ -37,6 +44,14 @@ MovieView.propTypes = {
     description: PropTypes.string.isRequired,
     genre: PropTypes.shape({
       Name: PropTypes.string.isRequired,
+<<<<<<< HEAD
+    }).isRequired,
+    director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }).isRequired,
+    onBackClick: PropTypes.func,
+  }),
+=======
     }),
     director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
@@ -45,4 +60,5 @@ MovieView.propTypes = {
     image: PropTypes.string,
   }).isRequired,
   onBackClick: PropTypes.func.isRequired,
+>>>>>>> main
 };
