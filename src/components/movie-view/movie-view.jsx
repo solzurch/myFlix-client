@@ -1,13 +1,25 @@
+import React from "react";
 import PropTypes from "prop-types";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
+import { MovieCard } from "../movie-card/movie-card";
 import "./movie-view.scss";
 
-export const MovieView = ({ movie }) => {
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+
+export const MovieView = ({ movies }) => {
   const { movieId } = useParams();
 
-  const movie = movies.find((b) => b.id === movieId);
+  const movie = movies.find((m) => m.id === movieId);
 
+  // Find similar movies based on genre
+  const similarMovies = movies.filter((m) => {
+    return (
+      m.id !== movie.id && m.genre.some((genre) => movie.genre.includes(genre))
+    );
+  });
   return (
     <div>
       <div>
@@ -50,6 +62,5 @@ MovieView.propTypes = {
     director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
     }).isRequired,
-    onBackClick: PropTypes.func,
   }),
 };

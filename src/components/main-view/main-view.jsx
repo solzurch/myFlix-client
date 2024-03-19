@@ -1,148 +1,71 @@
-import { useState, useEffect } from "react";
+import React from "react";
+import PropTypes from "prop-types";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
-import { MovieView } from "../movie-view/movie-view";
-import { LoginView } from "../login-view/login-view";
-import { SignupView } from "../signup-view/signup-view";
-import { NavigationBar } from "../navigation-bar/navigation-bar";
-import { ProfileView } from "../profile-view/profile-view";
+import "./movie-view.scss";
+
+import Button from "react-bootstrap/Button";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
-export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const storedToken = localStorage.getItem("token");
-  const [user, setUser] = useState(storedUser ? storedUser : null);
-  const [token, setToken] = useState(storedToken ? storedToken : null);
-  const [movies, setMovies] = useState([]);
+export const MovieView = ({ movies }) => {
+  const { movieId } = useParams();
 
-  useEffect(() => {
-    if (!token) {
-      return;
-    }
-    fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
-      headers: { Authorization: `Bearer ${token}` },
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        const moviesFromApi = data.map((movie) => {
-          return {
-            id: movie._id,
-            title: movie.Title,
-            imagePath: movie.Image,
-            genre: movie.Genre,
-            description: movie.Description,
-            director: movie.Director,
-          };
-        });
+  // Find the movie with the specified movieId
+  const movie = movies.find((m) => m.id === movieId);
 
-        setMovies(moviesFromApi);
-      });
-  }, [token]);
+  // Find similar movies based on genre
+  const similarMovies = movies.filter((m) => {
+    return m.id !== movie.id && m.genre.Name === movie.genre.Name;
+  });
 
   return (
-    <BrowserRouter>
-      <NavigationBar
-        user={user}
-        onLoggedOut={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      />
-      <br />
-
-      <Row className="justify-content-md-center">
-        <Routes>
-          <Route
-            path="/signup"
-            element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <SignupView />
-                  </Col>
-                )}
-              </>
-            }
-          />
-          <Route
-            path="/login"
-            element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <LoginView
-                      onLoggedIn={(user, token) => {
-                        setUser(user);
-                        setToken(token);
-                      }}
-                    />
-                  </Col>
-                )}
-              </>
-            }
-          />
-
-          <Route
-            path="/users"
-            element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col> The list is empty!</Col>
-                ) : (
-                  <Col>
-                    <ProfileView />
-                  </Col>
-                )}
-              </>
-            }
-          />
-          <Route
-            path="/movies/:movieId"
-            element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <Col md={8}>
-                    <MovieView movies={movies} />
-                  </Col>
-                )}
-              </>
-            }
-          />
-
-          <Route
-            path="/"
-            element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <>
-                    {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={3}>
-                        <MovieCard movie={movie} />
-                      </Col>
-                    ))}
-                  </>
-                )}
-              </>
-            }
-          />
-        </Routes>
-      </Row>
-    </BrowserRouter>
+    <div>
+      <div>
+        <img height={300} src={movie.image} />
+      </div>
+      <div>
+        <span>Title: </span>
+        <span>{movie.title}</span>
+      </div>
+      <div>
+        <span>Director: </span>
+        <span>{movie.director.Name}</span>
+      </div>
+      <div>
+        <span>Description: </span>
+        <span>{movie.description}</span>
+      </div>
+      <div>
+        <span>Genre: </span>
+        <span>{movie.genre.Name}</span>
+      </div>
+      <div>
+        <span>Featured: </span>
+        <span>{movie.featured}</span>
+      </div>
+      <Link to={`/`}>
+        <button className="back-button">Back</button>
+      </Link>
+    </div>
   );
+};
+
+MovieView.propTypes = {
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.string.isRequired,
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      genre: PropTypes.shape({
+        Name: PropTypes.string.isRequired,
+      }).isRequired,
+      director: PropTypes.shape({
+        Name: PropTypes.string.isRequired,
+      }).isRequired,
+      featured: PropTypes.bool.isRequired,
+      image: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };
