@@ -6,8 +6,11 @@ import Form from "react-bootstrap/Form";
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+<<<<<<< HEAD
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
+=======
+>>>>>>> main
   const handleSubmit = (event) => {
     // this prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
@@ -41,6 +44,7 @@ export const LoginView = ({ onLoggedIn }) => {
   };
 
   return (
+<<<<<<< HEAD
     <Form onSubmit={handleSubmit}>
       <Form.Group controlId="formUsername">
         <Form.Label>Username:</Form.Label>
@@ -67,5 +71,28 @@ export const LoginView = ({ onLoggedIn }) => {
         Login
       </Button>
     </Form>
+=======
+    <form onSubmit={handleSubmit}>
+      <label>Username:</label>
+      <input
+        type="text"
+        minLength={5}
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        required
+      />
+      <br />
+      <label>Password:</label>
+      <input
+        type="password"
+        minLength={8}
+        value={password}
+        onChange={(e) => setPassword(e.target.value)}
+        required
+      />
+      <br />
+      <button type="submit">Submit</button>
+    </form>
+>>>>>>> main
   );
 };

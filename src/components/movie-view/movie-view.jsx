@@ -44,10 +44,21 @@ MovieView.propTypes = {
     description: PropTypes.string.isRequired,
     genre: PropTypes.shape({
       Name: PropTypes.string.isRequired,
+<<<<<<< HEAD
     }).isRequired,
     director: PropTypes.shape({
       Name: PropTypes.string.isRequired,
     }).isRequired,
     onBackClick: PropTypes.func,
   }),
+=======
+    }),
+    director: PropTypes.shape({
+      Name: PropTypes.string.isRequired,
+    }),
+    featured: PropTypes.bool,
+    image: PropTypes.string,
+  }).isRequired,
+  onBackClick: PropTypes.func.isRequired,
+>>>>>>> main
 };
