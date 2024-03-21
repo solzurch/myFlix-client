@@ -34,70 +34,83 @@ export const MainView = () => {
             director: movie.Director,
           };
         });
-
         setMovies(moviesFromApi);
       });
   }, [token]);
 
   if (!user) {
     return (
-      <LoginView
-        onLoggedIn={(user, token) => {
-          setUser(user);
-          setToken(token);
-        }}
-      />
+      <Row className="justify-content-md-center">
+        <Col md={4}>
+          <LoginView
+            onLoggedIn={(user, token) => {
+              setUser(user);
+              setToken(token);
+            }}
+          />
+          <br />
+          <hr />
+          <SignupView />
+        </Col>
+      </Row>
     );
   }
 
   if (movies.length === 0) return <div>The list is empty!</div>;
 
   if (selectedMovie) {
-    let similarMovies = movies.filter((movie) => {
-      return (
-        movie.id !== selectedMovie.id &&
-        Array.isArray(movie.genre) &&
-        movie.genre.some((genre) => selectedMovie.genre.includes(genre))
-      );
-    });
     return (
-      <>
-        <button
-          onClick={() => {
-            setUser(null);
-          }}
-        >
-          Logout
-        </button>
-        <MovieView
-          movie={selectedMovie}
-          onBackClick={() => setSelectedMovie(null)}
-        />
-      </>
+      <Row>
+        <Col md={8}>
+          <MovieView
+            key={selectedMovie.id}
+            movie={selectedMovie}
+            onBackClick={() => setSelectedMovie(null)}
+          />
+          <Row>
+            <Col className="mb-5">
+              <hr />
+              <h3> SimilarMovies </h3>
+              <Row>
+                {movies
+                  .filter((movie) => {
+                    return (
+                      movie.id !== selectedMovie.id &&
+                      movie.genre.Name.includes(selectedMovie.genre.Name)
+                    );
+                  })
+                  .map((movie) => (
+                    <Col key={movie.id} md={4}>
+                      <MovieCard
+                        // key={movie.id}
+                        movie={movie}
+                        onMovieClick={(newSelectedMovie) => {
+                          setSelectedMovie(newSelectedMovie);
+                        }}
+                      />
+                    </Col>
+                  ))}
+              </Row>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
     );
-  }
-
-  if (movies.length === 0) {
-    return (
-      <>
-        <button
-          onClick={() => {
-            setUser(null);
-          }}
-        >
-          Logout
-        </button>
-        <div>The list is empty!</div>
-      </>
-    );
-  }
-  if (movies.length === 0) {
-    return <div>The list is empty!</div>;
   }
 
   return (
-    <div>
-      <button
+    <Row className="justify-content-md-center">
+      {movies.map((movie) => (
+        <Col className="mb-5" key={movie.id} md={3}>
+          <MovieCard
+            movie={movie}
+            onMovieClick={(newSelectedMovie) => {
+              setSelectedMovie(newSelectedMovie);
+            }}
+          />
+        </Col>
+      ))}
+      <Button
         onClick={() => {
           setUser(null);
           setToken(null);
@@ -105,16 +118,7 @@ export const MainView = () => {
         }}
       >
         Logout
-      </button>
-      {movies.map((movie) => (
-        <MovieCard
-          key={movie.id}
-          movie={movie}
-          onMovieClick={(newSelectedMovie) => {
-            setSelectedMovie(newSelectedMovie);
-          }}
-        />
-      ))}
-    </div>
+      </Button>
+    </Row>
   );
 };
