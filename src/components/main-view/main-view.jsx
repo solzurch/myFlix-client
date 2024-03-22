@@ -1,169 +1,235 @@
 import { useState, useEffect } from "react";
+import { Row, Col, Form } from "react-bootstrap";
+import { Routes, Route, Navigate, BrowserRouter } from "react-router-dom";
+import { NavigationBar } from "../navigation-bar/navigation-bar";
+import { baseUrl, storedUser, storedToken } from "../constants";
 import { MovieCard } from "../movie-card/movie-card";
 import { MovieView } from "../movie-view/movie-view";
 import { LoginView } from "../login-view/login-view";
 import { SignupView } from "../signup-view/signup-view";
-import { NavigationBar } from "../navigation-bar/navigation-bar";
+import { AccountView } from "../account-view/account-view";
 import { ProfileView } from "../profile-view/profile-view";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 
 export const MainView = () => {
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-  const storedToken = localStorage.getItem("token");
   const [user, setUser] = useState(storedUser ? storedUser : null);
   const [token, setToken] = useState(storedToken ? storedToken : null);
   const [movies, setMovies] = useState([]);
-};
+  const [favMovies, setFav] = useState([]);
 
-useEffect(() => {
-  if (!token) {
-    return;
-  }
-  fetch("https://pelis-api-8f563354313a.herokuapp.com/movies", {
-    headers: { Authorization: `Bearer ${token}` },
-  })
-    .then((response) => response.json())
-    .then((data) => {
-      const moviesFromApi = data.map((movie) => {
-        return {
+  const handleOnLoggedIn = (user, token) => {
+    setUser(user);
+    setToken(token);
+  };
+
+  const handleOnLoggedOut = () => {
+    setUser(null);
+    setToken(null);
+    localStorage.clear();
+  };
+
+  useEffect(() => {
+    if (!token) {
+      return;
+    }
+    fetch(baseUrl + "/movies", {
+      headers: { Authorization: `Bearer ${token}` },
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        const moviesfromApi = data.map((movie) => ({
           id: movie._id,
+          image: movie.ImagePath,
           title: movie.Title,
-          image: movie.ImgPath,
-          genre: movie.Genre,
           description: movie.Description,
+          genre: movie.Genre,
+          featured: movie.Featured,
           director: movie.Director,
-        };
+        }));
+        setMovies(moviesfromApi);
       });
-      setMovies(moviesFromApi);
-    });
-}, [token]);
+  }, [token]);
 
-if (!user) {
+  useEffect(() => {
+    if (!user) {
+      return;
+    }
+    fetch(baseUrl + `/profile/${user.Username}`, {
+      method: "GET",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (response) => {
+        const userData = await response.json();
+        const userMovies = userData["FavoriteMovies"];
+        if (!userMovies) {
+          setFav("No favorites yet!");
+        } else {
+          const findMovies = movies.filter((m) => userMovies.includes(m.id));
+          setFav(findMovies);
+        }
+      })
+      .catch((error) => console.error("Error fetching user profile:", error));
+  }, [user, token, movies]);
+
+  const addFav = (movieId) => {
+    fetch(baseUrl + `/profile/${user.Username}/movies/${movieId}`, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("user", JSON.stringify(data));
+          setUser(data);
+          alert("Added to favorites!");
+        } else {
+          alert("Error");
+        }
+      })
+      .catch((e) => {
+        console.error("Error adding to favorites:", e);
+      });
+  };
+
+  const removeFav = (movieId) => {
+    fetch(baseUrl + `/profile/${user.Username}/movies/${movieId}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+      .then(async (response) => {
+        if (response.ok) {
+          const data = await response.json();
+          localStorage.setItem("user", JSON.stringify(data));
+          setUser(data);
+          alert("Removed from favorites!");
+        } else {
+          alert("Error");
+        }
+      })
+      .catch((e) => {
+        console.error("Error removing from favorites:", e);
+      });
+  };
+
   return (
     <BrowserRouter>
-      <NavigationBar
-        user={user}
-        onLoggedOut={() => {
-          setUser(null);
-          setToken(null);
-          localStorage.clear();
-        }}
-      />
-      <br />
-
+      <NavigationBar user={user} onLoggedOut={handleOnLoggedOut} />
       <Row className="justify-content-md-center">
         <Routes>
           <Route
             path="/signup"
             element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <SignupView />
-                  </Col>
-                )}
-              </>
+              user ? (
+                <Navigate to="/" />
+              ) : (
+                <Col md={6}>
+                  <SignupView />
+                </Col>
+              )
             }
           />
           <Route
             path="/login"
             element={
-              <>
-                {user ? (
-                  <Navigate to="/" />
-                ) : (
-                  <Col md={5}>
-                    <LoginView
-                      onLoggedIn={(user, token) => {
-                        setUser(user);
-                        setToken(token);
-                      }}
-                    />
-                  </Col>
-                )}
-              </>
+              user ? (
+                <Navigate to="/" />
+              ) : (
+                <Col md={6}>
+                  <LoginView onLoggedIn={handleOnLoggedIn} />
+                </Col>
+              )
             }
           />
-
           <Route
-            path="/users"
+            path="/profile/:Username/account"
             element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col> The list is empty!</Col>
-                ) : (
-                  <Col>
-                    <ProfileView />
-                  </Col>
-                )}
-              </>
+              !user ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Col md={10}>
+                  <AccountView
+                    user={user}
+                    token={token}
+                    setUser={setUser}
+                    addFav={addFav}
+                    removeFav={removeFav}
+                  />
+                </Col>
+              )
+            }
+          />
+          <Route
+            path="/profile/:Username"
+            element={
+              !user ? (
+                <Navigate to="/login" replace />
+              ) : (
+                <Col md={10}>
+                  <ProfileView
+                    user={user}
+                    isFavorite={favMovies}
+                    addFav={addFav}
+                    removeFav={removeFav}
+                  />
+                </Col>
+              )
             }
           />
           <Route
             path="/movies/:movieId"
             element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <Col md={8}>
-                    <MovieView movies={movies} />
-                  </Col>
-                )}
-              </>
+              !user ? (
+                <Navigate to="/login" replace />
+              ) : movies.length === 0 ? (
+                <Col>The list is empty!</Col>
+              ) : (
+                <Col md={10}>
+                  <MovieView
+                    movies={movies}
+                    isFavorite={favMovies}
+                    addFav={addFav}
+                    removeFav={removeFav}
+                  />
+                </Col>
+              )
             }
           />
-
-          <Route
-            path="/profile"
-            element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : (
-                  <Col>
-                    <ProfileView
-                      user={user}
-                      token={token}
-                      movies={movies}
-                      setUser={setUser}
-                    />
-                  </Col>
-                )}
-              </>
-            }
-          />
-
           <Route
             path="/"
             element={
-              <>
-                {!user ? (
-                  <Navigate to="/login" replace />
-                ) : movies.length === 0 ? (
-                  <Col>The list is empty!</Col>
-                ) : (
-                  <>
-                    {movies.map((movie) => (
-                      <Col className="mb-4" key={movie.id} md={3}>
-                        <MovieCard movie={movie} />
-                      </Col>
-                    ))}
-                  </>
-                )}
-              </>
+              !user ? (
+                <Navigate to="/login" replace />
+              ) : movies.length === 0 ? (
+                <Col>The list is empty!</Col>
+              ) : (
+                <>
+                  {movies.map((movie) => (
+                    <Col
+                      className="mb-4"
+                      key={`${movie.id}_movie_list`}
+                      lg={3}
+                      md={4}
+                      sm={12}
+                    >
+                      <MovieCard
+                        movie={movie}
+                        isFavorite={favMovies}
+                        addFav={addFav}
+                        removeFav={removeFav}
+                      />
+                    </Col>
+                  ))}
+                </>
+              )
             }
           />
         </Routes>
       </Row>
     </BrowserRouter>
   );
-}
+};

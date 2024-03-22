@@ -1,13 +1,10 @@
-import React from "react";
-import PropTypes from "prop-types";
+import { baseUrl } from "../constants";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { Button, Form } from "react-bootstrap";
 
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -16,8 +13,7 @@ export const LoginView = ({ onLoggedIn }) => {
       Username: username,
       Password: password,
     };
-
-    fetch("https://pelis-api-8f563354313a.herokuapp.com/login", {
+    fetch(baseUrl + "/login", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -28,44 +24,49 @@ export const LoginView = ({ onLoggedIn }) => {
       .then((data) => {
         console.log("Login response: ", data);
         if (data.user) {
-          localStorage.setItem("token", data.token);
           localStorage.setItem("user", JSON.stringify(data.user));
+          localStorage.setItem("token", data.token);
           onLoggedIn(data.user, data.token);
         } else {
           alert("No such user");
         }
       })
       .catch((e) => {
-        alert("Something went wrong");
+        alert("Something went wrong!");
       });
   };
-
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form onSubmit={handleSubmit} className="mt-5 mb-5 formLabel">
       <Form.Group controlId="formUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
           type="text"
+          className="formInput"
+          placeholder="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          required
-          minLength="5"
+          minLength="3"
+          requiried
         />
       </Form.Group>
-      <br />
+
       <Form.Group controlId="formPassword">
-        <Form.Label>Password:</Form.Label>
+        <Form.Label className="mt-2">Password:</Form.Label>
         <Form.Control
           type="password"
+          className="formInput"
+          placeholder="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength="8"
         />
       </Form.Group>
-      <br />
-      <Button variant="primary" type="submit">
-        Login
+      <Button
+        className="mb-2 mt-2 primaryButton w-100"
+        variant="primary"
+        type="submit"
+      >
+        login
       </Button>
     </Form>
   );
