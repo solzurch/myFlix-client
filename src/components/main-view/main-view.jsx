@@ -164,7 +164,7 @@ export const MainView = () => {
             }
           />
           <Route
-            path="/profile/:Username"
+            path="/profile/:Username/account"
             element={
               !user ? (
                 <Navigate to="/login" replace />

@@ -27385,7 +27385,7 @@ const MainView = ()=>{
                             columnNumber: 11
                         }, undefined),
                         /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Route), {
-                            path: "/profile/:Username",
+                            path: "/profile/:Username/account",
                             element: !user ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Navigate), {
                                 to: "/login",
                                 replace: true
@@ -41383,20 +41383,7 @@ const MovieCard = ({ movie, isFavorite, addFav, removeFav })=>{
                         children: [
                             isFavorite.includes(movie) ? /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactBootstrap.Button), {
                                 onClick: remove,
-                                className: "primaryButton mt-2",
-                                children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("p", {
-                                    children: /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)(FaHeart, {
-                                        color: "darkred"
-                                    }, void 0, false, {
-                                        fileName: "src/components/movie-card/movie-card.jsx",
-                                        lineNumber: 19,
-                                        columnNumber: 19
-                                    }, undefined)
-                                }, void 0, false, {
-                                    fileName: "src/components/movie-card/movie-card.jsx",
-                                    lineNumber: 18,
-                                    columnNumber: 17
-                                }, undefined)
+                                className: "primaryButton mt-2"
                             }, void 0, false, {
                                 fileName: "src/components/movie-card/movie-card.jsx",
                                 lineNumber: 17,
@@ -41406,14 +41393,14 @@ const MovieCard = ({ movie, isFavorite, addFav, removeFav })=>{
                                 className: "primaryButton mt-2"
                             }, void 0, false, {
                                 fileName: "src/components/movie-card/movie-card.jsx",
-                                lineNumber: 23,
+                                lineNumber: 19,
                                 columnNumber: 15
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)("span", {
                                 children: " "
                             }, void 0, false, {
                                 fileName: "src/components/movie-card/movie-card.jsx",
-                                lineNumber: 25,
+                                lineNumber: 21,
                                 columnNumber: 13
                             }, undefined),
                             /*#__PURE__*/ (0, _jsxDevRuntime.jsxDEV)((0, _reactRouterDom.Link), {
@@ -41424,12 +41411,12 @@ const MovieCard = ({ movie, isFavorite, addFav, removeFav })=>{
                                     children: "INFO"
                                 }, void 0, false, {
                                     fileName: "src/components/movie-card/movie-card.jsx",
-                                    lineNumber: 27,
+                                    lineNumber: 23,
                                     columnNumber: 15
                                 }, undefined)
                             }, void 0, false, {
                                 fileName: "src/components/movie-card/movie-card.jsx",
-                                lineNumber: 26,
+                                lineNumber: 22,
                                 columnNumber: 13
                             }, undefined)
                         ]
@@ -41449,7 +41436,7 @@ const MovieCard = ({ movie, isFavorite, addFav, removeFav })=>{
                     className: "moviePoster"
                 }, void 0, false, {
                     fileName: "src/components/movie-card/movie-card.jsx",
-                    lineNumber: 33,
+                    lineNumber: 29,
                     columnNumber: 9
                 }, undefined)
             ]

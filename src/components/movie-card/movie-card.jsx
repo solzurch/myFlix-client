@@ -14,11 +14,7 @@ export const MovieCard = ({ movie, isFavorite, addFav, removeFav }) => {
         <Card.Body className="justify-content-md-center cardBody">
           <Card.Text>
             {isFavorite.includes(movie) ? (
-              <Button onClick={remove} className="primaryButton mt-2">
-                <p>
-                  <FaHeart color="darkred" />
-                </p>
-              </Button>
+              <Button onClick={remove} className="primaryButton mt-2"></Button>
             ) : (
               <Button onClick={add} className="primaryButton mt-2"></Button>
             )}
