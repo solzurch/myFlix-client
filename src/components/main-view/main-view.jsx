@@ -30,7 +30,7 @@ useEffect(() => {
         return {
           id: movie._id,
           title: movie.Title,
-          imagePath: movie.Image,
+          image: movie.ImgPath,
           genre: movie.Genre,
           description: movie.Description,
           director: movie.Director,
@@ -116,6 +116,26 @@ if (!user) {
                 ) : (
                   <Col md={8}>
                     <MovieView movies={movies} />
+                  </Col>
+                )}
+              </>
+            }
+          />
+
+          <Route
+            path="/profile"
+            element={
+              <>
+                {!user ? (
+                  <Navigate to="/login" replace />
+                ) : (
+                  <Col>
+                    <ProfileView
+                      user={user}
+                      token={token}
+                      movies={movies}
+                      setUser={setUser}
+                    />
                   </Col>
                 )}
               </>

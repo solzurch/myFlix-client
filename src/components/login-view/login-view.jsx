@@ -1,4 +1,5 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useState } from "react";
 import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
@@ -9,7 +10,6 @@ export const LoginView = ({ onLoggedIn }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
   const handleSubmit = (event) => {
-    // this prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
 
     const data = {
@@ -52,7 +52,7 @@ export const LoginView = ({ onLoggedIn }) => {
           minLength="5"
         />
       </Form.Group>
-
+      <br />
       <Form.Group controlId="formPassword">
         <Form.Label>Password:</Form.Label>
         <Form.Control
@@ -63,6 +63,7 @@ export const LoginView = ({ onLoggedIn }) => {
           minLength="8"
         />
       </Form.Group>
+      <br />
       <Button variant="primary" type="submit">
         Login
       </Button>
