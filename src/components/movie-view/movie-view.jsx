@@ -1,55 +1,75 @@
+import React from "react";
 import PropTypes from "prop-types";
+import { useParams } from "react-router";
+import { Link } from "react-router-dom";
+import { MovieCard } from "../movie-card/movie-card";
+
+import Button from "react-bootstrap/Button";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
 import "./movie-view.scss";
 
-export const MovieView = ({ movie, onBackClick }) => {
+export const MovieView = ({ movies }) => {
+  const { movieId } = useParams();
+
+  const movie = movies.find((m) => m.id === movieId);
+
+  // Find similar movies based on genre
+  const similarMovies = movies.filter((m) => {
+    return (
+      m.id !== movie.id &&
+      m.genre.some((genre) => movie.genre.includes(genre.Name))
+    );
+  });
+
   return (
     <div>
       <div>
-        <img height={300} src={movie.image} />
+        <img height={300} src={movie.imgPath} />
       </div>
       <div>
-        <span>Title: </span>
-        <span>{movie.title}</span>
+        <h4>{movie.title}</h4>
       </div>
       <div>
-        <span>Director: </span>
-        <span>{movie.director.Name}</span>
+        <p>{movie.description}</p>
       </div>
       <div>
-        <span>Description: </span>
-        <span>{movie.description}</span>
+        <h6>Genre: {movie.genre.Name}</h6>
       </div>
       <div>
-        <span>Genre: </span>
-        <span>{movie.genre.Name}</span>
+        <h6>Director: {movie.director.Name}</h6>
       </div>
-      <div>
-        <span>Featured: </span>
-        <span>{movie.featured}</span>
-      </div>
-      <button
-        onClick={onBackClick}
-        className="back-button"
-        style={{ cursor: "pointer" }}
-      >
-        Back
-      </button>
+
+      <Link to={`/`}>
+        <Button className="back-button"> Back </Button>
+      </Link>
+
+      <Col className="mb-5">
+        <hr />
+        <h3 className="title"> Similar movies </h3>
+        <Row>
+          {similarMovies.map((movie) => (
+            <Col key={movie.id} xs={6} sm={6} md={6}>
+              <MovieCard movie={movie} />
+            </Col>
+          ))}
+        </Row>
+      </Col>
     </div>
   );
 };
 
 MovieView.propTypes = {
-  movie: PropTypes.shape({
-    title: PropTypes.string.isRequired,
-    description: PropTypes.string.isRequired,
-    genre: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-    }),
-    director: PropTypes.shape({
-      Name: PropTypes.string.isRequired,
-    }),
-    featured: PropTypes.bool,
-    image: PropTypes.string,
-  }).isRequired,
-  onBackClick: PropTypes.func.isRequired,
+  movies: PropTypes.arrayOf(
+    PropTypes.shape({
+      title: PropTypes.string.isRequired,
+      description: PropTypes.string.isRequired,
+      genre: PropTypes.arrayOf(
+        PropTypes.shape({
+          Name: PropTypes.string.isRequired,
+        })
+      ).isRequired,
+      director: PropTypes.string.isRequired,
+    })
+  ).isRequired,
 };

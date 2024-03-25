@@ -1,15 +1,13 @@
 import React from "react";
+import PropTypes from "prop-types";
 import { useState } from "react";
-import Button from "react-bootstrap/Button";
 import Form from "react-bootstrap/Form";
+import Button from "react-bootstrap/Button";
 
 export const LoginView = ({ onLoggedIn }) => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const storedUser = JSON.parse(localStorage.getItem("user"));
-
   const handleSubmit = (event) => {
-    // this prevents the default behavior of the form which is to reload the entire page
     event.preventDefault();
 
     const data = {
@@ -42,30 +40,34 @@ export const LoginView = ({ onLoggedIn }) => {
 
   return (
     <Form onSubmit={handleSubmit}>
+      <h1> Login to your account </h1>
       <Form.Group controlId="formUsername">
         <Form.Label>Username:</Form.Label>
         <Form.Control
           type="text"
+          minLength={5}
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           required
-          minLength="5"
         />
       </Form.Group>
-
+      <br />
       <Form.Group controlId="formPassword">
         <Form.Label>Password:</Form.Label>
         <Form.Control
           type="password"
+          minLength={8}
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
-          minLength="8"
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
-        Login
-      </Button>
+      <br />
+      <Button type="submit">Login</Button>
     </Form>
   );
+};
+
+LoginView.propTypes = {
+  onLoggedIn: PropTypes.func.isRequired,
 };
