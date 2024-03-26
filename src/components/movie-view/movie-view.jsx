@@ -18,6 +18,7 @@ export const MovieView = ({ movies }) => {
   const similarMovies = movies.filter((m) => {
     return (
       m.id !== movie.id &&
+      Array.isArray(m.genre) &&
       m.genre.some((genre) => movie.genre.includes(genre.Name))
     );
   });

@@ -33,11 +33,12 @@ export const MainView = () => {
             id: movie._id,
             image: movie.imgPath,
             title: movie.title,
-            genre: movie.genre.Name,
+            genre: movie.genre ? movie.genre.Name : "Unknown Genre",
             description: movie.description,
-            director: movie.director.Name,
+            director: movie.director ? movie.director.Name : "Unknown Director",
           };
         });
+
         localStorage.setItem("movies", JSON.stringify(moviesFromApi));
         setMovies(moviesFromApi);
       });
