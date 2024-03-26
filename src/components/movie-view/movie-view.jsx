@@ -22,7 +22,7 @@ export const MovieView = ({ movies }) => {
   return (
     <div>
       <div>
-        <img height={300} src={movie.image} />
+        <img height={400} src={movie.image} />
       </div>
       <div>
         <h4>{movie.title}</h4>
@@ -46,7 +46,7 @@ export const MovieView = ({ movies }) => {
         <h3 className="title"> Similar movies </h3>
         <Row>
           {similarMovies.map((movie) => (
-            <Col key={movie.id} xs={6} sm={6} md={6}>
+            <Col key={movie.id} xs={3} sm={3} md={3}>
               <MovieCard movie={movie} />
             </Col>
           ))}
