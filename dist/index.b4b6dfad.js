@@ -41779,7 +41779,7 @@ const NavigationBar = ({ user, query, movies, handleSearch, onLoggedOut })=>{
                     as: (0, _reactRouterDom.Link),
                     to: "/",
                     className: "d-flex align-items-center",
-                    children: "Mis Pelis"
+                    children: "My Flix App"
                 }, void 0, false, {
                     fileName: "src/components/navigation-bar/navigation-bar.jsx",
                     lineNumber: 22,

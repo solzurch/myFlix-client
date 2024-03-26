@@ -20,7 +20,7 @@ export const NavigationBar = ({
     >
       <Container>
         <Navbar.Brand as={Link} to="/" className="d-flex align-items-center">
-          Mis Pelis
+          My Flix App
         </Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
