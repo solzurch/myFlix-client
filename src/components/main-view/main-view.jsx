@@ -31,11 +31,11 @@ export const MainView = () => {
         const moviesFromApi = data.map((movie) => {
           return {
             id: movie._id,
-            image: movie.imgPath,
-            title: movie.title,
-            genre: movie.genre ? movie.genre.Name : "Unknown Genre",
-            description: movie.description,
-            director: movie.director ? movie.director.Name : "Unknown Director",
+            image: movie.ImagePath,
+            title: movie.Title,
+            genre: movie.Genre.Name,
+            description: movie.Description,
+            director: movie.Director.Name,
           };
         });
 

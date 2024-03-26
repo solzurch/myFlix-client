@@ -16,17 +16,13 @@ export const MovieView = ({ movies }) => {
 
   // Find similar movies based on genre
   const similarMovies = movies.filter((m) => {
-    return (
-      m.id !== movie.id &&
-      Array.isArray(m.genre) &&
-      m.genre.some((genre) => movie.genre.includes(genre.Name))
-    );
+    return m.id !== movie.id && m.genre.includes(movie.genre);
   });
 
   return (
     <div>
       <div>
-        <img height={300} src={movie.imgPath} />
+        <img height={300} src={movie.image} />
       </div>
       <div>
         <h4>{movie.title}</h4>
@@ -35,10 +31,10 @@ export const MovieView = ({ movies }) => {
         <p>{movie.description}</p>
       </div>
       <div>
-        <h6>Genre: {movie.genre.Name}</h6>
+        <h6>Genre: {movie.genre}</h6>
       </div>
       <div>
-        <h6>Director: {movie.director.Name}</h6>
+        <h6>Director: {movie.director}</h6>
       </div>
 
       <Link to={`/`}>

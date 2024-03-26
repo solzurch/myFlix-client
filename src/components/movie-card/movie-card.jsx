@@ -104,7 +104,7 @@ export const MovieCard = ({ movie, isFavorite }) => {
         to={`/movies/${encodeURIComponent(movie.id)}`}
       >
         <Card>
-          <Card.Img variant="top" src={movie.imgPath} />
+          <Card.Img variant="top" src={movie.image} />
           <Card.Body>
             <Card.Title>{movie.title}</Card.Title>
             <Card.Text>{movie.genre.name}</Card.Text>
