@@ -1,5 +1,6 @@
 .moviePoster {
   background-color: #d8bfd866;
+  border-radius: 10px;
   padding: 0 10px 10px;
 }
 
@@ -26640,30 +26641,6 @@ textarea.form-control-lg {
   background-color: #f8f8ff;
   transition: all .9s;
   box-shadow: 0 0 10px 2px #d8bfd8;
-}
-
-.deleteButton:hover {
-  color: red;
-  letter-spacing: 4px;
-  background-color: #f8f8ff;
-  font-weight: 700;
-  transition: all .9s;
-  box-shadow: 0 0 10px 2px red;
-}
-
-.deleteButton, .warning {
-  text-align: center;
-  border-radius: 10px;
-  margin-top: 10px;
-  padding: 7px;
-  font-weight: 700;
-}
-
-.warning {
-  letter-spacing: 2px;
-  color: #000;
-  border: 2px dashed red;
-  margin-top: 150px;
 }
 
 .formLabel {

@@ -3,6 +3,7 @@ $primary-color: rgba(216, 191, 216, 0.4);
 .moviePoster {
   background-color: $primary-color;
   padding: 0px 10px 10px;
+  border-radius: 10px;
 };
 
 .moviecard:hover {
