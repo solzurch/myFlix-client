@@ -4,97 +4,75 @@ import { Button, Card } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import "./movie-card.scss";
 
-export const MovieCard = ({ movie, isFavorite }) => {
+export const MovieCard = ({ movie, updateUser }) => {
   const storedToken = localStorage.getItem("token");
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
-  const [user, setUser] = useState(storedUser ? storedUser : null);
-  const [token, setToken] = useState(storedToken ? storedToken : null);
+  const [isFavorite, setIsFavorite] = useState(false);
 
-  const [addTitle, setAddTitle] = useState("");
-  const [delTitle, setDelTitle] = useState("");
-
-  //ADD MOVIES TO FAVORITE
   useEffect(() => {
-    const addToFavorites = () => {
-      fetch(
-        `https://pelis-api-8f563354313a.herokuapp.com/users/${
-          user.UserName
-        }/movies/${encodeURIComponent(movie.title)}`,
-        {
-          method: "POST",
-          // body: JSON.stringify(favoriteMoviesData),
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to add movie to favorites.");
-          }
-          alert("Movie added to favorites successfully!");
-          window.location.reload();
-          return response.json();
-        })
-        .then((user) => {
-          if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-            setUser(user);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-
-    const removeFromFavorites = () => {
-      fetch(
-        `https://pelis-api-8f563354313a.herokuapp.com/users/${
-          user.UserName
-        }/movies/${encodeURIComponent(movie.title)}`,
-        {
-          method: "DELETE",
-          headers: {
-            Authorization: `Bearer ${storedToken}`,
-            "Content-Type": "application/json",
-          },
-        }
-      )
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error("Failed to remove movie from favorites.");
-          }
-          alert("Movie removed from favorites successfully!");
-          window.location.reload();
-          return response.json();
-        })
-        .then((user) => {
-          if (user) {
-            localStorage.setItem("user", JSON.stringify(user));
-            setUser(user);
-          }
-        })
-        .catch((error) => {
-          console.error(error);
-        });
-    };
-
-    if (addTitle) {
-      addToFavorites();
+    if (storedUser) {
+      setIsFavorite(storedUser.FavoriteMovies.includes(movie.id));
     }
-    if (delTitle) {
-      removeFromFavorites();
-    }
-  }, [addTitle, delTitle, token]);
+  }, [storedUser]);
 
-  const handleAddToFavorites = () => {
-    setAddTitle(movie.title);
+  const addToFavorites = () => {
+    fetch(
+      `https://pelis-api-8f563354313a.herokuapp.com/users/${storedUser.Username}/movies/${movie.id}`,
+      {
+        method: "POST",
+        // body: JSON.stringify(favoriteMoviesData),
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to add movie to favorites.");
+        }
+        alert("Movie added to favorites successfully!");
+        return response.json();
+      })
+      .then((user) => {
+        if (user) {
+          updateUser(user);
+          setIsFavorite(true);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
-  const handleRemoveFromFavorites = () => {
-    setDelTitle(movie.title);
+  const removeFromFavorites = () => {
+    fetch(
+      `https://pelis-api-8f563354313a.herokuapp.com/users/${storedUser.Username}/movies/${movie.id}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${storedToken}`,
+          "Content-Type": "application/json",
+        },
+      }
+    )
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to remove movie from favorites.");
+        }
+        alert("Movie removed from favorites successfully!");
+        return response.json();
+      })
+      .then((user) => {
+        if (user) {
+          updateUser(user);
+          setIsFavorite(false);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   };
 
   return (
@@ -113,11 +91,11 @@ export const MovieCard = ({ movie, isFavorite }) => {
       </Link>
       <Card>
         {isFavorite ? (
-          <Button variant="primary" onClick={handleRemoveFromFavorites}>
+          <Button variant="warning" onClick={removeFromFavorites}>
             Remove from favorites
           </Button>
         ) : (
-          <Button variant="primary" onClick={handleAddToFavorites}>
+          <Button variant="primary" onClick={addToFavorites}>
             Add to favorites
           </Button>
         )}

@@ -2,22 +2,22 @@ import React from "react";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { FavoriteMovies } from "./favorite-movies";
 import { UpdateUser } from "./update-user";
 import { Card, Button, Image } from "react-bootstrap";
 import "./profile-view.scss";
 
-export const ProfileView = ({ token, user, movies, onSubmit }) => {
+export const ProfileView = ({ token, movies, updateUser }) => {
   const storedUser = JSON.parse(localStorage.getItem("user"));
 
-  const [username, setUsername] = useState(user.UserName);
-  const [email, setEmail] = useState(user.Email);
-  const [birthdate, setBirthdate] = useState(user.Birthdate);
+  const [username, setUsername] = useState(storedUser.Username);
+  const [email, setEmail] = useState(storedUser.Email);
+  const [birthdate, setBirthdate] = useState(storedUser.Birthday);
   const [password, setPassword] = useState("");
 
   const favoriteMovies = movies.filter((m) =>
-    user.FavoriteMovies.includes(m.title)
+    storedUser.FavoriteMovies.includes(m.id)
   );
 
   const formData = {
@@ -26,7 +26,7 @@ export const ProfileView = ({ token, user, movies, onSubmit }) => {
     Password: password,
   };
 
-  formData.Birthdate = birthdate
+  formData.Birthday = birthdate
     ? new Date(birthdate).toISOString().substring(0, 10)
     : null;
 
@@ -35,7 +35,7 @@ export const ProfileView = ({ token, user, movies, onSubmit }) => {
 
     // Send updated user information to the server, endpoint /users/:username
     fetch(
-      `https://pelis-api-8f563354313a.herokuapp.com/users/${storedUser.UserName}`,
+      `https://pelis-api-8f563354313a.herokuapp.com/users/${storedUser.Username}`,
       {
         method: "PUT",
         body: JSON.stringify(formData),
@@ -53,8 +53,7 @@ export const ProfileView = ({ token, user, movies, onSubmit }) => {
         alert("Update failed");
       })
       .then((data) => {
-        localStorage.setItem("user", JSON.stringify(data));
-        onSubmit(data);
+        updateUser(data);
       })
       .catch((error) => {
         console.error(error);
@@ -79,13 +78,16 @@ export const ProfileView = ({ token, user, movies, onSubmit }) => {
   };
 
   const handleDeleteAccount = (id) => {
-    fetch(`https://pelis-api-8f563354313a.herokuapp.com/users/${id}`, {
-      method: "DELETE",
-      headers: {
-        Authorization: `Bearer ${token}`,
-        "Content-Type": "application/json",
-      },
-    }).then((response) => {
+    fetch(
+      `https://pelis-api-8f563354313a.herokuapp.com/users/${storedUser.Username}`,
+      {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "application/json",
+        },
+      }
+    ).then((response) => {
       if (response.ok) {
         alert("The account has been successfully deleted.");
         localStorage.clear();
@@ -128,7 +130,10 @@ export const ProfileView = ({ token, user, movies, onSubmit }) => {
       </Row>
       <hr />
       <Row className="justify-content-center">
-        <FavoriteMovies user={user} favoriteMovies={favoriteMovies} />
+        <FavoriteMovies
+          favoriteMovies={favoriteMovies}
+          updateUser={updateUser}
+        />
       </Row>
     </>
   );

@@ -65,6 +65,11 @@ export const MainView = () => {
     setMovies(filteredMovies);
   };
 
+  const updateUser = (user) => {
+    localStorage.setItem("user", JSON.stringify(user));
+    setUser(user);
+  };
+
   return (
     <BrowserRouter>
       <NavigationBar
@@ -124,7 +129,7 @@ export const MainView = () => {
                       token={token}
                       user={user}
                       movies={movies}
-                      onSubmit={(user) => setUser(user)}
+                      updateUser={updateUser}
                     />
                   ) : (
                     <Navigate to="/login" />
@@ -162,10 +167,7 @@ export const MainView = () => {
                   <>
                     {movies.map((movie) => (
                       <Col className="mb-5" key={movie.id} sm={6} md={4} lg={3}>
-                        <MovieCard
-                          isFavorite={user.FavoriteMovies.includes(movie.title)}
-                          movie={movie}
-                        />
+                        <MovieCard movie={movie} updateUser={updateUser} />
                       </Col>
                     ))}
                   </>

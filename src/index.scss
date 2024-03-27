@@ -26,7 +26,7 @@ $body-bg: Ghostwhite;
   transition: all 0.9s;
 };
 };
-/* .deleteButton:hover {
+.deleteButton:hover {
   color: red;
   font-weight: 700;
   background-color: $body-bg;
@@ -47,7 +47,7 @@ $body-bg: Ghostwhite;
   margin-top: 150px;
   border: 2px dashed red;
   color: black;
-} */
+} 
 
 .formLabel {
   font-size: 15px;

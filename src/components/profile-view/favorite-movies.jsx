@@ -7,19 +7,15 @@ import { Link } from "react-router-dom";
 import { MovieCard } from "../movie-card/movie-card";
 import "./favorite-movies.scss";
 
-export const FavoriteMovies = ({ user, favoriteMovies }) => {
+export const FavoriteMovies = ({ favoriteMovies, updateUser }) => {
   return (
     <Col className="mb-5">
       <h3 className="title">List of favorite movies</h3>
       <Row>
         {favoriteMovies.map((movie) => (
-          <Col key={movie._id} md={6}>
+          <Col key={movie._id} md={3}>
             <Link to={`/movies/${movie._id}`} />
-            <MovieCard
-              key={movie._id}
-              isFavorite={user.FavoriteMovies.includes(movie.title)}
-              movie={movie}
-            />
+            <MovieCard key={movie._id} updateUser={updateUser} movie={movie} />
           </Col>
         ))}
       </Row>
