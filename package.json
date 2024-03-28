@@ -16,7 +16,7 @@
   },
   "source": "src/index.html",
   "scripts": {
-    "start": "parcel",
+    "start": "parcel src/index.html",
     "build": "parcel build"
   }
 }
