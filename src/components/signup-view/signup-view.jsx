@@ -20,7 +20,7 @@ export const SingupView = () => {
       Password: password,
     };
 
-    fetch("https://cine-verse-b8832aa84c3e.herokuapp.com/users", {
+    fetch("https://pelis-api-8f563354313a.herokuapp.com/users", {
       method: "POST",
       body: JSON.stringify(data),
       headers: {
