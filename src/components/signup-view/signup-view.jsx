@@ -14,7 +14,7 @@ export const SingupView = () => {
     const isoDate = new Date(birthday);
 
     const data = {
-      UserName: username,
+      Username: username,
       Email: email,
       Birthday: isoDate,
       Password: password,
